@@ -16,6 +16,7 @@ from core.analyzer import StateAnalyzer
 from core.strategy import StrategyEngine
 from learning.memory import GameMemory
 from learning.ml_engine import LearningEngine
+from dashboard import get_handler, start_dashboard
 from config.settings import (
     API_KEY, BASE_URL, WALLET_ADDRESS,
     HP_CRITICAL, HP_LOW, EP_MIN_ATTACK, EP_REST_THRESHOLD,
@@ -88,7 +89,10 @@ def setup_logging():
     os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
     # Terminal handler — dengan warna
-    console = logging.StreamHandler(sys.stdout)
+    # Wrap stdout to handle Unicode on Windows (cp1252 can't encode emoji)
+    import io
+    utf8_stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace', line_buffering=True)
+    console = logging.StreamHandler(utf8_stdout)
     console.setFormatter(ColorFormatter())
 
     # File handler — plain text tanpa ANSI
@@ -105,6 +109,11 @@ def setup_logging():
     root.addHandler(console)
     if LOG_TO_FILE:
         root.addHandler(file_h)
+
+    # Dashboard handler — capture logs for web UI
+    dash_handler = get_handler()
+    dash_handler.setLevel(level)
+    root.addHandler(dash_handler)
 
     # ── Suppress library spam ─────────────────────────────────────
     for noisy in [
@@ -972,7 +981,10 @@ class GameLoop:
 
     def run(self):
         """Main run loop — runs forever, game after game."""
+        # Start web dashboard
+        start_dashboard(port=5000)
         logger.info("Bot starting. Press Ctrl+C to stop.")
+        logger.info("[Dashboard] http://localhost:5000")
 
         # Print learning stats on startup
         stats = self.memory.get_stats()

@@ -1,3 +1,12 @@
+---
+title: Molty Royale AI Bot
+emoji: 🤖
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+pinned: false
+---
+
 # 🤖 Molty Royale AI Bot
 
 An elite AI battle royale bot with **continuous machine learning** — it gets smarter with every game.

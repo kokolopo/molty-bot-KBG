@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 """
 ==============================================================================
@@ -10,13 +13,13 @@ Edit values here before running the bot.
 # =============================================================================
 # API CREDENTIALS (REQUIRED)
 # =============================================================================
-API_KEY = os.environ.get("API_KEY", "mr_live_xxxxxxxxxxxxxxxxxxxx")
+API_KEY = os.getenv("API_KEY")
 BASE_URL = os.environ.get("BASE_URL", "https://cdn.moltyroyale.com/api")
 
 # =============================================================================
 # WALLET (REQUIRED FOR REWARDS)
 # =============================================================================
-WALLET_ADDRESS = os.environ.get("WALLET_ADDRESS", "0xxxxxxxxxxxxxxxxxxxx")
+WALLET_ADDRESS = os.getenv("WALLET_ADDRESS")
 
 # =============================================================================
 # GAME PREFERENCES
