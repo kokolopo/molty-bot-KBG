@@ -982,9 +982,10 @@ class GameLoop:
     def run(self):
         """Main run loop — runs forever, game after game."""
         # Start web dashboard
-        start_dashboard(port=5000)
+        port = int(os.environ.get("PORT", 5000))
+        start_dashboard(port=port)
         logger.info("Bot starting. Press Ctrl+C to stop.")
-        logger.info("[Dashboard] http://localhost:5000")
+        logger.info(f"[Dashboard] http://localhost:{port}")
 
         # Print learning stats on startup
         stats = self.memory.get_stats()

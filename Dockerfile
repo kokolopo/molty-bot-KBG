@@ -5,10 +5,15 @@ FROM python:3.10-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONFAULTHANDLER=1 \
     PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PORT=5000
 
 # Set working directory di dalam container
 WORKDIR /app
+
+# Create a virtual environment and use it
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy requirement pertama untuk memanfaatkan docker cache
 COPY requirements.txt .
@@ -21,6 +26,9 @@ COPY . .
 
 # Buat direktori data dan logs yang dibutuhkan oleh bot agar tidak error jika tidak ada
 RUN mkdir -p data logs
+
+# Expose the dashboard port
+EXPOSE 5000
 
 # Jalankan bot
 CMD ["python", "main.py"]
