@@ -9,6 +9,7 @@ Orchestrates: account setup → game finding → registration → game loop →
 import time
 import logging
 import sys
+import os
 from typing import Optional, Dict
 
 from core.api_client import APIClient, APIError
